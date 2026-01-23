@@ -1,62 +1,90 @@
 <?php
 
-require_once 'src/Domain/Author.php';
-require_once 'src/Domain/Document.php';
-require_once 'src/Client/DocumentManager.php';
+// CARGA DE COMPONENTES
+require_once 'src/Domain/ValueObjects/Author.php';
+require_once 'src/Domain/Contracts/PrototypeInterface.php';
+require_once 'src/Infrastructure/PrototypeRegistry.php';
 
-use App\Domain\Author;
-use App\Domain\Document;
-use App\Client\DocumentManager;
+// Familia ODT (Texto)
+require_once 'src/Domain/ODT/TextDocument.php';
+require_once 'src/Domain/ODT/Letter.php';
+require_once 'src/Domain/ODT/Report.php';
+require_once 'src/Client/ODTManager.php';
 
-echo "=== PATRÓN PROTOTYPE EN PHP ===\n\n";
+// Familia ODS (Hojas de cálculo)
+require_once 'src/Domain/ODS/Spreadsheet.php';
+require_once 'src/Domain/ODS/Budget.php';
+require_once 'src/Domain/ODS/StaffPlanning.php';
+require_once 'src/Client/ODSManager.php';
 
-$manager = new DocumentManager();
+require_once 'verifier.php';
 
-// Crear autor para la plantilla
-$defaultAuthor = new Author("Sistema", "sistema@email.com");
+use App\Domain\ValueObjects\Author;
+use App\Domain\ODT\Letter;
+use App\Domain\ODT\Report;
+use App\Domain\ODS\Budget;
+use App\Domain\ODS\StaffPlanning;
+use App\Client\ODTManager;
+use App\Client\ODSManager;
 
-// Crear plantilla de artículo técnico
-$articleTemplate = new Document(
-    "Artículo Técnico",
-    "Contenido del artículo...",
-    $defaultAuthor,
-    ["técnico", "documentación"]
-);
+echo "=== DEMOSTRACIÓN AVANZADA: PROTOTYPE MULTIDOMINIO (ODT & ODS) ===\n\n";
 
-// Mostrar plantilla original antes de ser clonada y utilizada
-echo "--- Plantilla original (debe conservar autor original) ---\n";
-echo $articleTemplate->getInfo() . "\n\n";
+$systemAuthor = new Author("Admin Central", "admin@corp.com");
 
-$manager->registerTemplate("tech_article", $articleTemplate);
+// ---------------------------------------------------------
+// 1. GESTIÓN DE DOCUMENTOS DE TEXTO (ODT)
+// ---------------------------------------------------------
+echo "[+] Inicializando ODTManager...\n";
+$odtManager = new ODTManager();
+$odtManager->registerFromType("std_letter", "Letter", ["Standard Letter", $systemAuthor, "Guest"]);
+$odtManager->registerFromType("monthly_report", "Report", ["Monthly Sales", "...", $systemAuthor, "M-000"]);
 
-// Clonar y personalizar artículo sobre PHP
-echo "--- Creando artículo sobre PHP ---\n";
-$phpArticle = $manager->createFromTemplate("tech_article");
-$phpArticle->setTitle("Patrones de Diseño en PHP");
-$phpArticle->setContent("Los patrones de diseño son soluciones...");
-$phpArticle->addTag("PHP");
-$phpArticle->addTag("patrones");
+/** @var Letter $myLetter */
+$myLetter = $odtManager->createFromTemplate("std_letter");
+$myLetter->setRecipient("Antonio González");
+$myLetter->getAuthor()->setName("HR Team");
 
-// Modificar el autor del clon (gracias a __clone, es independiente)
-$phpArticle->getAuthor()->setName("Antonio González");
-$phpArticle->getAuthor()->setEmail("antonio@email.com");
+echo $myLetter->getInfo() . "\n\n";
 
-echo $phpArticle->getInfo() . "\n\n";
+/** @var Report $myReport */
+$myReport = $odtManager->createFromTemplate("monthly_report");
+$myReport->setReportId("R-001");
+$myReport->getAuthor()->setName("HR Team");
 
-// Clonar y personalizar artículo sobre Laravel
-echo "--- Creando artículo sobre Laravel ---\n";
-$laravelArticle = $manager->createFromTemplate("tech_article");
-$laravelArticle->setTitle("Eloquent ORM en Laravel");
-$laravelArticle->setContent("Eloquent es el ORM de Laravel...");
-$laravelArticle->addTag("Laravel");
-$laravelArticle->addTag("ORM");
+echo $myReport->getInfo() . "\n\n";
 
-$laravelArticle->getAuthor()->setName("Carlos Ruiz");
-$laravelArticle->getAuthor()->setEmail("carlos@email.com");
+// ---------------------------------------------------------
+// 2. GESTIÓN DE HOJAS DE CÁLCULO (ODS)
+// ---------------------------------------------------------
+echo "[+] Inicializando ODSManager...\n";
+$odsManager = new ODSManager();
+$odsManager->registerFromType("annual_budget", "Budget", ["Annual Budget 2026", $systemAuthor, 0.0]);
+$odsManager->registerFromType("q1_planning", "StaffPlanning", ["Q1 Workforce", $systemAuthor, 0]);
 
-echo $laravelArticle->getInfo() . "\n\n";
+/** @var Budget $marketingBudget */
+$marketingBudget = $odsManager->createFromTemplate("annual_budget");
+$marketingBudget->setSheetName("Marketing Dept Budget");
+$marketingBudget->setTotalAmount(25000.50);
+$marketingBudget->getAuthor()->setName("CMO Office");
 
-// Verificar que la plantilla original NO se modificó
-echo "--- Plantilla original (debe conservar autor original) ---\n";
-echo $articleTemplate->getInfo() . "\n\n";
+echo $marketingBudget->getInfo() . "\n\n";
 
+// ---------------------------------------------------------
+// 3. VERIFICACIÓN DE INDEPENDENCIA (TRANSVERSAL)
+// ---------------------------------------------------------
+echo "=== VERIFICACIONES DE INDEPENDENCIA ===\n";
+
+/** @var Budget $anotherBudget */
+$anotherBudget = $odsManager->createFromTemplate("annual_budget");
+$anotherBudget->setSheetName("IT Dept Budget");
+$anotherBudget->setTotalAmount(50000.00);
+
+verifyIndependence($marketingBudget, $anotherBudget, "Marketing Budget vs IT Budget");
+
+/** @var Letter $anotherLetter */
+$anotherLetter = $odtManager->createFromTemplate("std_letter");
+verifyIndependence($myLetter, $anotherLetter, "Letter 1 vs Letter 2");
+
+echo "=== CONCLUSIÓN ===\n";
+echo "Hemos usado una misma base (PrototypeRegistry) para gestionar dos dominios \n";
+echo "totalmente distintos (Texto y Datos), demostrando la potencia de la abstracción.\n";
