@@ -10,17 +10,16 @@ use App\Infrastructure\PrototypeRegistry;
 class ODSManager extends PrototypeRegistry
 {
     /**
-     * Registra un prototipo instanciándolo dinámicamente por su tipo.
+     * Implementación específica para el dominio ODS.
      */
-    public function registerFromType(string $alias, string $type, array $args): void
+    protected function createPrototype(string $type, array $args): \App\Domain\Contracts\PrototypeInterface
     {
         $className = "App\\Domain\\ODS\\" . ucfirst($type);
         
         if (!class_exists($className)) {
-            throw new \InvalidArgumentException("La clase $className no existe.");
+            throw new \InvalidArgumentException("La clase $className no existe en el dominio ODS.");
         }
 
-        $prototype = new $className(...$args);
-        $this->registerTemplate($alias, $prototype);
+        return new $className(...$args);
     }
 }

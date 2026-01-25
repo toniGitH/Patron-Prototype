@@ -29,25 +29,31 @@ use App\Client\ODSManager;
 
 echo "=== DEMOSTRACIÓN AVANZADA: PROTOTYPE MULTIDOMINIO (ODT & ODS) ===\n\n";
 
+// Creamos un autor genérico que será inyectado en los documentos
 $systemAuthor = new Author("Admin Central", "admin@corp.com");
 
 // ---------------------------------------------------------
 // 1. GESTIÓN DE DOCUMENTOS DE TEXTO (ODT)
 // ---------------------------------------------------------
 echo "[+] Inicializando ODTManager...\n";
+// Instanciamos el gestor de documentos de texto
 $odtManager = new ODTManager();
-$odtManager->registerFromType("std_letter", "Letter", ["Standard Letter", $systemAuthor, "Guest"]);
-$odtManager->registerFromType("monthly_report", "Report", ["Monthly Sales", "...", $systemAuthor, "M-000"]);
+// Creamos un prototipo de tipo "Letter" y lo registramos en el gestor
+$odtManager->registerPrototype("std_letter", "Letter", ["Standard Letter", $systemAuthor, "Guest"]);
+// Creamos un prototipo de tipo "Report" y lo registramos en el gestor
+$odtManager->registerPrototype("monthly_report", "Report", ["Monthly Sales", "...", $systemAuthor, "M-000"]);
 
 /** @var Letter $myLetter */
-$myLetter = $odtManager->createFromTemplate("std_letter");
+// Clonamos el prototipo "std_letter" y lo modificamos
+$myLetter = $odtManager->createFromPrototype("std_letter");
 $myLetter->setRecipient("Antonio González");
 $myLetter->getAuthor()->setName("HR Team");
 
 echo $myLetter->getInfo() . "\n\n";
 
 /** @var Report $myReport */
-$myReport = $odtManager->createFromTemplate("monthly_report");
+// Clonamos el prototipo "monthly_report" y lo modificamos
+$myReport = $odtManager->createFromPrototype("monthly_report");
 $myReport->setReportId("R-001");
 $myReport->getAuthor()->setName("HR Team");
 
@@ -58,11 +64,11 @@ echo $myReport->getInfo() . "\n\n";
 // ---------------------------------------------------------
 echo "[+] Inicializando ODSManager...\n";
 $odsManager = new ODSManager();
-$odsManager->registerFromType("annual_budget", "Budget", ["Annual Budget 2026", $systemAuthor, 0.0]);
-$odsManager->registerFromType("q1_planning", "StaffPlanning", ["Q1 Workforce", $systemAuthor, 0]);
+$odsManager->registerPrototype("annual_budget", "Budget", ["Annual Budget 2026", $systemAuthor, 0.0]);
+$odsManager->registerPrototype("q1_planning", "StaffPlanning", ["Q1 Workforce", $systemAuthor, 0]);
 
 /** @var Budget $marketingBudget */
-$marketingBudget = $odsManager->createFromTemplate("annual_budget");
+$marketingBudget = $odsManager->createFromPrototype("annual_budget");
 $marketingBudget->setSheetName("Marketing Dept Budget");
 $marketingBudget->setTotalAmount(25000.50);
 $marketingBudget->getAuthor()->setName("CMO Office");
@@ -75,14 +81,14 @@ echo $marketingBudget->getInfo() . "\n\n";
 echo "=== VERIFICACIONES DE INDEPENDENCIA ===\n";
 
 /** @var Budget $anotherBudget */
-$anotherBudget = $odsManager->createFromTemplate("annual_budget");
+$anotherBudget = $odsManager->createFromPrototype("annual_budget");
 $anotherBudget->setSheetName("IT Dept Budget");
 $anotherBudget->setTotalAmount(50000.00);
 
 verifyIndependence($marketingBudget, $anotherBudget, "Marketing Budget vs IT Budget");
 
 /** @var Letter $anotherLetter */
-$anotherLetter = $odtManager->createFromTemplate("std_letter");
+$anotherLetter = $odtManager->createFromPrototype("std_letter");
 verifyIndependence($myLetter, $anotherLetter, "Letter 1 vs Letter 2");
 
 echo "=== CONCLUSIÓN ===\n";

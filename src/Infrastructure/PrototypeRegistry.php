@@ -7,7 +7,7 @@ use App\Domain\Contracts\PrototypeInterface;
 /**
  * Esta clase es lo que, oficialmente, en el patrón, se conoce como Prototype Manager.
  * Clase base para el registro o gestor de prototipos (un prototipo es un objeto instanciado de una clase base, que se
- * utiliza como plantilla para crear nuevos objetos).
+ * utiliza como prototipo o modelo para crear nuevos objetos).
  * Contiene la lógica genérica de almacenamiento y clonación.
  * Es abstracta porque en este ejemplo hemos decidido tener dos gestores específicos: ODTManager y ODSManager.
  * Que sea abstracta nos permite:
@@ -19,33 +19,44 @@ abstract class PrototypeRegistry
     /**
      * @var PrototypeInterface[]
      */
-    protected array $templates = [];
+    protected array $prototypes = [];
 
     /**
-     * Registra una plantilla en el catálogo.
+     * Registra un prototipo en el catálogo instanciándolo dinámicamente.
+     * 
+     * @param string $alias Nombre con el que se registrará en el catálogo.
+     * @param string $type Nombre corto de la clase.
+     * @param array $args Argumentos para el constructor del prototipo.
      */
-    public function registerTemplate(string $name, PrototypeInterface $prototype): void
+    public function registerPrototype(string $alias, string $type, array $args = []): void
     {
-        $this->templates[$name] = $prototype;
+        $prototype = $this->createPrototype($type, $args);
+        $this->prototypes[$alias] = $prototype;
     }
 
     /**
-     * Crea un clon a partir de una plantilla registrada.
+     * Método de "Fábrica": Debe ser implementado por los hijos
+     * para saber en qué namespace buscar la clase concreta.
      */
-    public function createFromTemplate(string $name): ?PrototypeInterface
+    abstract protected function createPrototype(string $type, array $args): PrototypeInterface;
+
+    /**
+     * Crea un clon a partir de un prototipo registrado.
+     */
+    public function createFromPrototype(string $name): ?PrototypeInterface
     {
-        if (!isset($this->templates[$name])) {
+        if (!isset($this->prototypes[$name])) {
             return null;
         }
 
-        return clone $this->templates[$name];
+        return clone $this->prototypes[$name];
     }
 
     /**
-     * Devuelve los nombres de todas las plantillas registradas.
+     * Devuelve los nombres de todos los prototipos registrados.
      */
-    public function listTemplates(): array
+    public function listPrototypes(): array
     {
-        return array_keys($this->templates);
+        return array_keys($this->prototypes);
     }
 }
