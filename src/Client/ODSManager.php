@@ -11,6 +11,10 @@ class ODSManager extends PrototypeRegistry
 {
     /**
      * Implementación específica para el dominio ODS.
+     * 
+     * @param string $type El tipo de prototipo a crear ("Budget", "StaffPlanning").
+     * @param array $args Propiedades del prototipo de tipo DATOS (Spreadsheet.php).
+     * @return \App\Domain\Contracts\PrototypeInterface El prototipo de hoja de cálculo.
      */
     protected function createPrototype(string $type, array $args): \App\Domain\Contracts\PrototypeInterface
     {

@@ -9,6 +9,10 @@ namespace App\Domain\Contracts;
  */
 interface PrototypeInterface
 {
+    /**
+     * El método mágico __clone es el corazón técnico del patrón Prototype en PHP.
+     * Interviene en el proceso de clonación para asegurar que no se compartan referencias (Deep Copy).
+     */
     public function __clone();
     
     /**

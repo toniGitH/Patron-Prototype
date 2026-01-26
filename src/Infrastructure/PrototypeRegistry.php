@@ -17,6 +17,10 @@ use App\Domain\Contracts\PrototypeInterface;
 abstract class PrototypeRegistry
 {
     /**
+     * Almacén de prototipos.
+     * Es un array que contiene todos los prototipos registrados.
+     * Cada prototipo es un objeto instanciado de una clase base, que se utiliza como prototipo o modelo para crear nuevos objetos.
+     * 
      * @var PrototypeInterface[]
      */
     protected array $prototypes = [];
@@ -26,7 +30,7 @@ abstract class PrototypeRegistry
      * 
      * @param string $alias Nombre con el que se registrará en el catálogo.
      * @param string $type Nombre corto de la clase.
-     * @param array $args Argumentos para el constructor del prototipo.
+     * @param array $args Argumentos para el constructor del prototipo en particular.
      */
     public function registerPrototype(string $alias, string $type, array $args = []): void
     {
@@ -42,6 +46,9 @@ abstract class PrototypeRegistry
 
     /**
      * Crea un clon a partir de un prototipo registrado.
+     * 
+     * @param string $name Nombre del prototipo a clonar.
+     * @return ?PrototypeInterface El nuevo objeto clonado o null si no existe.
      */
     public function createFromPrototype(string $name): ?PrototypeInterface
     {
@@ -53,7 +60,21 @@ abstract class PrototypeRegistry
     }
 
     /**
+     * Devuelve el objeto prototipo original (el maestro) para inspección.
+     * No es necesario usarlo en la práctica, pero es útil con fines didácticos para la verificación de independencia.
+     * 
+     * @param string $name Nombre con el que se registrará en el catálogo.
+     * @return ?PrototypeInterface
+     */
+    public function getPrototype(string $name): ?PrototypeInterface
+    {
+        return $this->prototypes[$name] ?? null;
+    }
+
+    /**
      * Devuelve los nombres de todos los prototipos registrados.
+     * 
+     * @return array Lista de alias registrados.
      */
     public function listPrototypes(): array
     {

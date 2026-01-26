@@ -11,6 +11,12 @@ class ODTManager extends PrototypeRegistry
 {
     /**
      * Implementación específica para el dominio ODT.
+     * Este método no lo heredamos implementado en la clase padre.
+     * Viene declarado como abstracto en la clase padre, por lo que estamos obligados a implementarlo aquí.
+     * 
+     * @param string $type El tipo de prototipo a crear.
+     * @param array $args Son las propiedades de cualquier prototipo de tipo TEXTO (TextDocument.php).
+     * @return \App\Domain\Contracts\PrototypeInterface El prototipo creado.
      */
     protected function createPrototype(string $type, array $args): \App\Domain\Contracts\PrototypeInterface
     {

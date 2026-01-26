@@ -1,7 +1,11 @@
 <?php
 
 /**
- * Función de utilidad para comparar objetos y demostrar independencia
+ * Función de utilidad para comparar objetos y demostrar independencia técnica.
+ * 
+ * @param mixed $obj1 Primer objeto a comparar.
+ * @param mixed $obj2 Segundo objeto a comparar.
+ * @param string $label Etiqueta descriptiva para la salida por consola.
  */
 function verifyIndependence($obj1, $obj2, string $label): void {
     echo "--- Verificando independencia: $label ---\n";

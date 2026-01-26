@@ -9,21 +9,32 @@ use App\Domain\ValueObjects\Author;
  */
 class StaffPlanning extends Spreadsheet
 {
-    private int $employeeCount;
+    private int $staffCode;
 
-    public function __construct(string $sheetName, Author $author, int $employeeCount = 0)
+    /**
+     * @param string $title Título de la hoja.
+     * @param Author $author Autor.
+     * @param int $staffCode Código o número identificativo del personal.
+     */
+    public function __construct(string $title, Author $author, int $staffCode = 0)
     {
-        parent::__construct($sheetName, $author);
-        $this->employeeCount = $employeeCount;
+        parent::__construct($title, $author);
+        $this->staffCode = $staffCode;
     }
 
-    public function setEmployeeCount(int $count): void
+    /**
+     * @param int $code Nuevo código de personal.
+     */
+    public function setStaffCode(int $code): void
     {
-        $this->employeeCount = $count;
+        $this->staffCode = $code;
     }
 
+    /**
+     * @return string Información de la planificación incluyendo el código.
+     */
     public function getInfo(): string
     {
-        return parent::getInfo() . " | Employees: {$this->employeeCount}";
+        return parent::getInfo() . " | Employees: {$this->staffCode}";
     }
 }
