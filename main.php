@@ -1,23 +1,9 @@
 <?php
 
-// CARGA DE COMPONENTES
-require_once 'src/Domain/ValueObjects/Author.php';
-require_once 'src/Domain/Contracts/PrototypeInterface.php';
-require_once 'src/Infrastructure/PrototypeRegistry.php';
+// 1. CARGA AUTOMÁTICA DE COMPONENTES (PSR-4)
+require_once 'vendor/autoload.php';
 
-// Familia ODT (Texto)
-require_once 'src/Domain/ODT/TextDocument.php';
-require_once 'src/Domain/ODT/Letter.php';
-require_once 'src/Domain/ODT/Report.php';
-require_once 'src/Client/ODTManager.php';
-
-// Familia ODS (Hojas de cálculo)
-require_once 'src/Domain/ODS/Spreadsheet.php';
-require_once 'src/Domain/ODS/Budget.php';
-require_once 'src/Domain/ODS/StaffPlanning.php';
-require_once 'src/Client/ODSManager.php';
-
-// Verificador
+// 2. UTILIDADES EXTRA
 require_once 'verifier.php';
 
 use App\Domain\ValueObjects\Author;
