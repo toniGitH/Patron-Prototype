@@ -30,7 +30,7 @@ Es decir, que estas dos clases **IMPONEN** los requisitos **OBLIGATORIOS** que d
 En cierto modo, también es una especie de contrato que implica que cualquier objeto creado a partir de estas clases (de sus clases hijas) tenga, por ejemplo, un título, un autor y la capacidad de clonarse (características comunes heredadas).
 *   **Responsabilidad**: aquí es donde implementamos la interfaz `PrototypeInterface`. Definimos propiedades comunes (título, autor, tipo) y, lo más importante, programamos aquí la lógica de `__clone()` para que todos sus futuros hijos hereden la capacidad de clonarse profundamente de forma automática.
 
-## 4. `Letter.php`, `Report.php`, `Budget.php`, `StaffPlanning.php`: los Prototipos/Productos concretos
+## 4. `Letter.php`, `Report.php`, `Budget.php`, `StaffPlanning.php`: los Prototipos y los Productos concretos
 *   **Ubicación**: `src/Domain/ODT/` y `src/Domain/ODS/`
 *   **Qué son**: clases finales y específicas.
 *   **Propósito**: representan, al mismo tiempo:
@@ -45,14 +45,14 @@ Y esta es la característica nuclear de este patrón: no los objetos en sí (pue
 *   **Ubicación**: `src/Infrastructure/`
 *   **Qué es**: es lo que en este patrón se conoce como **Prototype Manager**.
 *   **Propósito**: le proporciona a los gestores concretos (ODTManager y ODSManager) toda la lógica que deben conocer para gestionar los documentos en esta aplicación. Es decir, que esta clase sólo "escribe la receta", pero son las clases hijas las que la "ejecutan".
-Concretamente, para poder gestionar los documentos en esta aplicación, los gestores concretos (ODTManager y ODSManager) deben saber:
-    1.  **Almacén de prototipos `$prototypes`**: aquí se guardan los **prototipos** instanciados (sólo los prototipos) de cada tipo de documento, para que estén accesibles para cuando la aplicación necesite crear productos concretos (clones) a partir de ellos.
-    2.  **Registrar prototipos `registerPrototype()`**: método que recibe el nombre que se dará al prototipo (alias), el tipo concreto de documento prototipo (string) y los argumentos necesarios para instanciarlo. Con estos datos y una llamada al método abstracto `createPrototype()` se registra el prototipo en el almacén.
-    3.  **Crear prototipos `createPrototype()`**: esta clase necesita los objetos prototipo concretos para poder registrarlos en el almacén, pero lo que no puede hacer es crear esos prototipos concretos, porque no conoce sus características concretas (son las clases hijas las que conocen esas características y pueden crear esos prototipos concretos). Por tanto, este método queda como abstracto y se delega su implementación a las clases hijas. Los hijos serán los responsables de crear estos objetos prototipo concretos (instanciarlos con *new*).
-    4.  **Crear productos concretos a partir de un prototipo registrado `createFromPrototype()`**: este método proporciona la lógica común de clonación, que es común a todos los prototipos. Por tanto, este método queda como concreto.
+Concretamente, para poder gestionar los documentos en esta aplicación, los gestores concretos (ODTManager y ODSManager) deben conocer:
+    - **Almacén de prototipos `$prototypes`**: aquí se guardan los **prototipos** instanciados (sólo los prototipos) de cada tipo de documento, para que estén accesibles para cuando la aplicación necesite crear productos concretos (clones) a partir de ellos.
+    - **Registrar prototipos `registerPrototype()`**: método que recibe el nombre que se dará al prototipo (alias), el tipo concreto de documento prototipo (string) y los argumentos necesarios para instanciarlo. Con estos datos y una llamada al método abstracto `createPrototype()` se registra el prototipo en el almacén.
+    - **Crear prototipos `createPrototype()`**: esta clase necesita los objetos prototipo concretos para poder registrarlos en el almacén, pero lo que no puede hacer es crear esos prototipos concretos, porque no conoce sus características concretas (son las clases hijas las que conocen esas características y pueden crear esos prototipos concretos). Por tanto, este método queda como abstracto y se delega su implementación a las clases hijas. Los hijos serán los responsables de crear estos objetos prototipo concretos (instanciarlos con *new*).
+    - **Crear productos concretos a partir de un prototipo registrado `createFromPrototype()`**: este método proporciona la lógica común de clonación, que es común a todos los prototipos. Por tanto, este método queda como concreto.
 
 
-## 6. `ODTManager.php` y `ODSManager.php`: los Gestores Especializados
+## 6. `ODTManager.php` y `ODSManager.php`: los gestores especializados
 *   **Ubicación**: `src/Client/`
 *   **Qué son**: clases que heredan las capacidades del padre `PrototypeRegistry`.
 *   **Propósito**: deben tener todas las capacidades necesarias para gestionar los productos (crear prototipos, almacenarlos, y crear productos concretos a partir de los prototipos).
