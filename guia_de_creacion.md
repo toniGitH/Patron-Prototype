@@ -1,4 +1,4 @@
-# 🧭 Guía de Construcción: Paso a Paso del Proyecto Patrón Prototype
+# 🧭 Guía de creación: paso a paso de la construcción del proyecto Patrón Prototype
 
 Este documento detalla el **orden lógico** de creación y la razón de ser de cada componente creado en este proyecto. Aquí no solo se explica el código, sino el **porqué** de cada decisión arquitectónica.
 
