@@ -1,8 +1,10 @@
 # 🧭 Guía de creación: paso a paso de la construcción del proyecto Patrón Prototype
 
-Este documento detalla el **orden lógico** de creación y la razón de ser de cada componente creado en este proyecto. Aquí no solo se explica el código, sino el **porqué** de cada decisión arquitectónica.
+Este documento detalla un **orden lógico** en el que se deben crear los archivos del proyecto y la razón de ser de cada uno.
 
-Aunque **la clonación es una operación nativa de PHP**, y por tanto, toda la estructura propuesta en este proyecto no es necesaria, se ha decidido implementarla para mostrar el comportamiento del patrón más allá del propio lenguaje de programación.
+No solo se explica el código, sino el **porqué** de cada decisión arquitectónica.
+
+Aunque **la clonación es una operación nativa de PHP**, y por tanto, toda la estructura propuesta en este proyecto no es necesaria, se ha decidido implementar íntegramente el patrón para mostrar su estructura más allá del propio lenguaje de programación que se utilice.
 
 ---
 
