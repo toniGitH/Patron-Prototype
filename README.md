@@ -39,6 +39,8 @@ Repositorio creado para explicar el patrón **Prototype** y su implementación m
 
 <br>
 
+## 🤖 El patrón Prototype
+
 > ⚠️ **ACLARACIÓN PREVIA**
 >
 > En el lenguaje PHP, la clonación de objetos es una funcionalidad nativa, gracias al operador **clone** y al método mágico **__clone()** que se ejecuta automáticamente tras aplicar el operador **clone**.
@@ -47,9 +49,7 @@ Repositorio creado para explicar el patrón **Prototype** y su implementación m
 >
 > Sin embargo, para tratar de entender la arquitectura que hay en este patrón más allá del lenguaje utilizado, he decidido "complicar" el ejemplo, implementando el patrón en su forma más pura.
 >
-> Para entender mejor cómo he implementado el patrón Prototype en este proyecto, te recomiendo que leas el archivo `clonacion_en_php.md` que se encuentra en la raíz del proyecto.
-
-## 🤖 El patrón Prototype
+> Para entender mejor cómo he implementado el patrón Prototype en este proyecto, te recomiendo que leas el archivo [clonacion_en_php.md](clonacion_en_php.md) que se encuentra en la raíz del proyecto.
 
 El patrón **Prototype** es un patrón **creacional** que trata de evitar la creación de objetos complejos a partir de cero, con el coste de recursos que ello podría implicar en determinados casos, proponiendo una estructura que permita crear copias de objetos ya existentes en lugar de crearlos desde cero.
 
@@ -247,7 +247,7 @@ Ubicadas en `src/index.php` y en `src/styles.css`
 
 ### 🧭 Guía de creación del proyecto
 
-En el archivo `guia_de_creacion.md` se explican los pasos que se han seguido para escribir el proyecto en un orden lógico.
+En el archivo [guia_de_creacion.md](guia_de_creacion.md) se explican los pasos que se han seguido para escribir el proyecto en un orden lógico.
 
 <br>
 
