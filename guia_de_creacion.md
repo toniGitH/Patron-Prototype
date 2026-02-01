@@ -73,3 +73,7 @@ Para ello, concretamente, deben:
 *   **Qué es**: el punto de entrada (Entry Point).
 *   **Acción**: aquí se conecta todo. Se instancian los autores, se crean los prototipos maestros, se registran en los managers y se solicitan los clones para personalizarlos.
 *   **Detalle profesional**: gracias al uso de `vendor/autoload.php` (estándar PSR-4), este archivo no necesita conocer las rutas de las clases. El sistema escala automáticamente: si añadimos 100 tipos nuevos, el `main.php` se mantiene limpio y sin `require` adicionales.
+76: 
+77: <br>
+78: 
+79: [Volver al Readme](README.md)

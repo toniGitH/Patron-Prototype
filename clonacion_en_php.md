@@ -41,3 +41,7 @@ Cuando llamamos al operador `clone`, durante el proceso de clonación que se ini
 - si el método `__clone()` existe y es *public*, el proceso de clonado se ejecutará sin problemas, ejecutándose la *shallow copy* más la *deep copy* (se copiarán las propiedades objeto que se hayan implementado en el método `__clone()`)
 - si el método `__clone()` no existe, el proceso de clonado también se ejecutará sin problemas, pero sólo se ejecutará la *shallow copy* (no se copiarán las propiedades objeto puesto que el método `__clone()`, al no existir, no implementará la copia de las propiedades objeto)
 - si el método `__clone()` existe pero es *private* o *protected*, el proceso de clonado fallará, y no se ejecutará ninguna de las fases.
+44: 
+45: <br>
+46: 
+47: [Volver al Readme](README.md)
